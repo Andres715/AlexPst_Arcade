@@ -1,0 +1,14 @@
+/* ==========================================================================
+   AlexPst Arcade - CSS Master Bundle (Lazy-load Imports)
+   ========================================================================== */
+
+/* 1. Base y Estilos Globales */
+@import url('./general/global.css');
+
+/* 2. Interfaz del Menú de Inicio */
+@import url('./index/menu.css');
+
+/* 3. Estilos Específicos para cada juego (corregido a "games") */
+@import url('./games/dino.css');
+@import url('./games/gym.css');
+@import url('./games/cakes.css');

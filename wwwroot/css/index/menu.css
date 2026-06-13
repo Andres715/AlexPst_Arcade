@@ -1,0 +1,84 @@
+/* Títulos del Menú Principal */
+h1 {
+    color: #ff5c8a;
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-align: center;
+    line-height: 1.1;
+    -webkit-text-stroke: 2px #ffffff;
+    filter: drop-shadow(0 4px 0px #ff8fab);
+}
+
+.subtitle {
+    color: #70d6ff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 35px;
+    text-shadow: 2px 2px 0px #fff;
+    background-color: #e8f0fe;
+    padding: 5px 15px;
+    border-radius: 15px;
+    border: 2px dashed #70d6ff;
+}
+
+/* Panel e Interacción de los Botones */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 75%;
+}
+
+.btn {
+    color: #fff;
+    border: 4px solid #ffffff;
+    padding: 16px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0px transparent !important;
+}
+
+/* Variaciones de colores temáticos */
+.btn-dino { 
+    background-color: #ffb3c6; 
+    box-shadow: 0 6px 0px #ff8fab; 
+}
+.btn-dino:hover { 
+    background-color: #ff8fab; 
+    transform: translateY(2px);
+    box-shadow: 0 4px 0px #ff5c8a;
+}
+
+.btn-gym { 
+    background-color: #cddafd; 
+    box-shadow: 0 6px 0px #a3bdfd; 
+    color: #5271ff; 
+}
+.btn-gym:hover { 
+    background-color: #a3bdfd; 
+    transform: translateY(2px);
+    box-shadow: 0 4px 0px #5271ff;
+}
+
+.btn-cakes { 
+    background-color: #ffe5ec; 
+    box-shadow: 0 6px 0px #ffc2d1; 
+    color: #ff5c8a; 
+}
+.btn-cakes:hover { 
+    background-color: #ffc2d1; 
+    transform: translateY(2px);
+    box-shadow: 0 4px 0px #ff5c8a;
+}

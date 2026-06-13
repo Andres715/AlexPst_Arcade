@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlexPst Arcade: The Lore Games</title>
+    <link rel="stylesheet" href="./wwwroot/css/main.css">
+</head>
+<body>
+
+    <div id="arcade-container">
+
+        <div id="main-menu" class="screen active">
+            <h1>AlexPst Arcade</h1>
+            <div class="subtitle">✨ The Lore Games ✨</div>
+            
+            <div class="menu-buttons">
+                <button class="btn btn-dino" onclick="switchScreen('game-dino')">
+                    🚗 ¡Cuidado, Mamá al Volante!
+                </button>
+                <button class="btn btn-gym" onclick="switchScreen('game-gym')">
+                    🏋️‍♂️ Gym Wars vs Señoras
+                </button>
+                <button class="btn btn-cakes" onclick="switchScreen('game-cakes')">
+                    🍓 Fresa Diet Simulator
+                </button>
+            </div>
+        </div>
+
+        <div id="game-dino" class="screen">
+            <button class="btn-back" onclick="switchScreen('main-menu')">🌸 Menú</button>
+            <h2>¡Esquiva la Camioneta!</h2>
+            <canvas id="canvas-dino" width="700" height="400"></canvas>
+        </div>
+
+        <div id="game-gym" class="screen">
+            <button class="btn-back" onclick="switchScreen('main-menu')">🌸 Menú</button>
+            <h2>Gym Wars: Modo Fresa</h2>
+            <canvas id="canvas-gym" width="700" height="400"></canvas>
+        </div>
+
+        <div id="game-cakes" class="screen">
+            <button class="btn-back" onclick="switchScreen('main-menu')">🌸 Menú</button>
+            <h2>Fresa Diet Simulator</h2>
+            <canvas id="canvas-cakes" width="700" height="400"></canvas>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // Variable global para contener la función de destrucción del juego activo
+        let activeGameDestroyer = null;
+
+        // Función global mapeada en las ventanas para cambiar pantallas
+        window.switchScreen = async function(screenId) {
+            // 1. Si hay un juego ejecutándose, lo limpiamos de memoria antes de salir
+            if (activeGameDestroyer) {
+                activeGameDestroyer();
+                activeGameDestroyer = null;
+            }
+
+            // 2. Gestión visual de contenedores activos
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            
+            // 3. LAZY LOAD: El código del juego se solicita a la red únicamente aquí
+            if (screenId === 'game-dino') {
+                try {
+                    // Importación dinámica bajo demanda
+                    const { initDinoGame } = await import('./wwwroot/js/games/dino.js');
+                    // Inicializamos y guardamos el recolector de basura de eventos
+                    activeGameDestroyer = initDinoGame();
+                } catch (err) {
+                    console.error("Error cargando dinámicamente el módulo de Dino Run:", err);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
