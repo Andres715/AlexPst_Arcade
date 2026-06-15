@@ -48,35 +48,50 @@
     </div>
 
     <script type="module">
-        // Variable global para contener la función de destrucción del juego activo
-        let activeGameDestroyer = null;
+    // Variable global para contener la función de destrucción del juego activo
+    let activeGameDestroyer = null;
 
-        // Función global mapeada en las ventanas para cambiar pantallas
-        window.switchScreen = async function(screenId) {
-            // 1. Si hay un juego ejecutándose, lo limpiamos de memoria antes de salir
-            if (activeGameDestroyer) {
-                activeGameDestroyer();
-                activeGameDestroyer = null;
+    // Función global mapeada en las ventanas para cambiar pantallas
+    window.switchScreen = async function(screenId) {
+        // 1. Si hay un juego ejecutándose, lo limpiamos de memoria antes de salir
+        if (activeGameDestroyer) {
+            activeGameDestroyer();
+            activeGameDestroyer = null;
+        }
+
+        // 2. Gestión visual de contenedores activos
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenId).classList.add('active');
+        
+        // 3. LAZY LOAD: El código del juego se solicita a la red únicamente aquí
+        if (screenId === 'game-dino') {
+            try {
+                const { initDinoGame } = await import('./wwwroot/js/games/dino.js');
+                activeGameDestroyer = initDinoGame();
+            } catch (err) {
+                console.error("Error cargando dinámicamente el módulo de Dino Run:", err);
             }
-
-            // 2. Gestión visual de contenedores activos
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-            
-            // 3. LAZY LOAD: El código del juego se solicita a la red únicamente aquí
-            if (screenId === 'game-dino') {
-                try {
-                    // Importación dinámica bajo demanda
-                    const { initDinoGame } = await import('./wwwroot/js/games/dino.js');
-                    // Inicializamos y guardamos el recolector de basura de eventos
-                    activeGameDestroyer = initDinoGame();
-                } catch (err) {
-                    console.error("Error cargando dinámicamente el módulo de Dino Run:", err);
-                }
+        } 
+        else if (screenId === 'game-gym') {
+            try {
+                const { initGymGame } = await import('./wwwroot/js/games/gym.js');
+                activeGameDestroyer = initGymGame();
+            } catch (err) {
+                console.error("Error cargando dinámicamente el módulo de Gym Wars:", err);
             }
         }
-    </script>
+        // 👇 CARGA DINÁMICA DEL JUEGO DE LOS PASTELES
+        else if (screenId === 'game-cakes') {
+            try {
+                const { initCakesGame } = await import('./wwwroot/js/games/cakes.js');
+                activeGameDestroyer = initCakesGame();
+            } catch (err) {
+                console.error("Error cargando dinámicamente el módulo de Fresa Diet Simulator:", err);
+            }
+        }
+    }
+</script>
 </body>
 </html>

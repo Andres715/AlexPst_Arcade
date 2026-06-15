@@ -1,0 +1,17 @@
+/* wwwroot/css/games/cakes.css */
+#canvas-cakes {
+    background-color: #fff0f3;
+    /* Patrón de cuadros dulces (picnic) */
+    background-image: 
+        repeating-linear-gradient(45deg, #ffe5ec 25%, transparent 25%, transparent 75%, #ffe5ec 75%, #ffe5ec), 
+        repeating-linear-gradient(45deg, #ffe5ec 25%, #fff0f3 25%, #fff0f3 75%, #ffe5ec 75%, #ffe5ec);
+    background-position: 0 0, 20px 20px;
+    background-size: 40px 40px;
+    border: 4px solid #ffb3c6;
+    animation: movePicnic 10s linear infinite;
+}
+
+@keyframes movePicnic {
+    0% { background-position: 0 0, 20px 20px; }
+    100% { background-position: 40px 40px, 60px 60px; }
+}
