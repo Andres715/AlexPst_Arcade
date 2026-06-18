@@ -41,7 +41,8 @@ export function initDinoGame() {
     playerImg.src = './wwwroot/images/emotes/alexpsHi.png';
 
     const obstacleImg = new Image();
-    obstacleImg.src = './wwwroot/images/sub_badges/fresa_con_chocolate.png';
+    // obstacleImg.src = './wwwroot/images/sub_badges/fresa_con_chocolate.png';
+    obstacleImg.src = './wwwroot/images/misc/camioneta_alex.png';
 
     // Personaje (AlexPst)
     const player = {
@@ -59,7 +60,7 @@ export function initDinoGame() {
     const obstacle = {
         x: canvas.width,
         y: 290,
-        width: 50,
+        width: 87.1,
         height: 50,
         speed: 4.5
     };
@@ -75,6 +76,7 @@ export function initDinoGame() {
     // Lógica del Salto
     function jump() {
         if (player.isGrounded) {
+            playSound('jump_alex_8_bit.mp3');
             player.vy = player.jumpForce;
             player.isGrounded = false;
         }
@@ -121,6 +123,8 @@ export function initDinoGame() {
     }
 
     function startGame() {
+        playSound('start_alex.mp3');
+
         score = 0;
         player.y = 280;
         player.vy = 0;
@@ -265,7 +269,16 @@ export function initDinoGame() {
         if (obstacle.x < -obstacle.width) {
             obstacle.x = canvas.width;
             score++;
-            obstacle.speed += difficulties[selectedDifficulty].acceleration;
+
+            const maxSpeed = difficulties[selectedDifficulty].initialSpeed * 2.25;
+
+            if (obstacle.speed < maxSpeed) {
+                obstacle.speed += difficulties[selectedDifficulty].acceleration;
+                
+                if (obstacle.speed > maxSpeed) {
+                    obstacle.speed = maxSpeed;
+                }
+            }
         }
 
         ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
@@ -288,6 +301,7 @@ export function initDinoGame() {
             player.y + player.height > obstacle.y
         ) {
             gameState = 'GAME_OVER';
+            playSound('fail_alex.mp3', 0.1);
             playerImg.src = './wwwroot/images/emotes/alexpsSad.png';
             
             // Activamos el bloqueo e imprimimos la pantalla de perder
@@ -310,6 +324,16 @@ export function initDinoGame() {
     window.addEventListener('keydown', handleKeyDown);
     canvas.addEventListener('mousedown', handleCanvasClick);
     canvas.addEventListener('touchstart', handleTouchStart);
+
+    // Reproducir audio de salto 
+    function playSound(soundName, volume = 0.25) {
+        const audio = new Audio(`./wwwroot/sounds/${soundName}`);
+        audio.volume = volume;
+
+        audio.play().catch(error => {
+            console.error("Error al reproducir el audio:", error);
+        });
+    }
 
     renderStartScreen();
 
